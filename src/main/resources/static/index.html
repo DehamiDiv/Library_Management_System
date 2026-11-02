@@ -1,0 +1,1641 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LibraryBook - Facebook Style Library System</title>
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <style>
+      :root {
+        --fb-blue: #1877f2;
+        --fb-blue-hover: #166fe5;
+        --fb-bg: #f0f2f5;
+        --fb-card-bg: #ffffff;
+        --fb-text: #050505;
+        --fb-secondary-text: #65676b;
+        --fb-border: #ced0d4;
+        --fb-hover-bg: #e4e6eb;
+        --fb-active-tab: #1877f2;
+        --fb-green: #31a24c;
+        --fb-red: #fa383e;
+        --fb-orange: #f7b125;
+        --fb-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+        --fb-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.2);
+        --radius-card: 10px;
+        --radius-btn: 6px;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+          Arial, sans-serif;
+        background-color: var(--fb-bg);
+        color: var(--fb-text);
+        font-size: 16px;
+        line-height: 1.5;
+        overflow-x: hidden;
+      }
+
+      /* Facebook Top Navigation Bar */
+      .fb-navbar {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background-color: var(--fb-card-bg);
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 18px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+      }
+
+      .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex: 1;
+        max-width: 380px;
+      }
+
+      .fb-logo {
+        width: 44px;
+        height: 44px;
+        background: linear-gradient(135deg, #1877f2, #0052cc);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 24px;
+        font-weight: 800;
+        cursor: pointer;
+        text-decoration: none;
+        box-shadow: 0 2px 5px rgba(24, 119, 242, 0.4);
+      }
+
+      .search-box {
+        position: relative;
+        flex: 1;
+      }
+
+      .search-box input {
+        width: 100%;
+        height: 42px;
+        border-radius: 50px;
+        border: none;
+        background-color: var(--fb-bg);
+        padding: 0 16px 0 42px;
+        font-size: 16px;
+        color: var(--fb-text);
+        outline: none;
+        transition: all 0.2s ease;
+      }
+
+      .search-box input:focus {
+        background-color: #fff;
+        box-shadow: 0 0 0 2px var(--fb-blue);
+      }
+
+      .search-box i {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--fb-secondary-text);
+        font-size: 17px;
+      }
+
+      .nav-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        gap: 8px;
+      }
+
+      .nav-tab {
+        height: 56px;
+        width: 90px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        cursor: pointer;
+        color: var(--fb-secondary-text);
+        font-size: 24px;
+        position: relative;
+        transition: background-color 0.2s;
+      }
+
+      .nav-tab:hover {
+        background-color: var(--fb-hover-bg);
+      }
+
+      .nav-tab.active {
+        color: var(--fb-blue);
+      }
+
+      .nav-tab.active::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background-color: var(--fb-blue);
+        border-radius: 2px 2px 0 0;
+      }
+
+      .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        justify-content: flex-end;
+        flex: 1;
+      }
+
+      .nav-circle-btn {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background-color: var(--fb-hover-bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--fb-text);
+        font-size: 18px;
+        cursor: pointer;
+        border: none;
+        transition: background 0.2s;
+      }
+
+      .nav-circle-btn:hover {
+        background-color: #d8dadf;
+      }
+
+      .user-pill {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 10px;
+        border-radius: 24px;
+        cursor: pointer;
+        background-color: var(--fb-hover-bg);
+        font-weight: 600;
+        font-size: 15px;
+      }
+
+      .user-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: #1877f2;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 16px;
+      }
+
+      /* 3-Column Facebook Layout */
+      .main-container {
+        max-width: 1360px;
+        margin: 20px auto;
+        padding: 0 16px;
+        display: grid;
+        grid-template-columns: 290px minmax(0, 1fr) 300px;
+        gap: 24px;
+        align-items: start;
+      }
+
+      /* Left Sidebar */
+      .sidebar {
+        position: sticky;
+        top: 84px;
+      }
+
+      .sidebar-card {
+        background: var(--fb-card-bg);
+        border-radius: var(--radius-card);
+        box-shadow: var(--fb-shadow);
+        padding: 16px;
+        margin-bottom: 16px;
+      }
+
+      .sidebar-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--fb-text);
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .sidebar-menu-item {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 12px 14px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--fb-text);
+        transition: background 0.2s;
+        text-decoration: none;
+      }
+
+      .sidebar-menu-item:hover,
+      .sidebar-menu-item.active {
+        background-color: var(--fb-hover-bg);
+      }
+
+      .sidebar-menu-item.active {
+        color: var(--fb-blue);
+      }
+
+      .sidebar-menu-item i {
+        font-size: 20px;
+        width: 24px;
+        text-align: center;
+      }
+
+      .stat-badge {
+        margin-left: auto;
+        background-color: var(--fb-hover-bg);
+        color: var(--fb-secondary-text);
+        font-size: 14px;
+        padding: 2px 10px;
+        border-radius: 12px;
+        font-weight: 700;
+      }
+
+      .stat-box {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .stat-item {
+        background: var(--fb-bg);
+        padding: 14px 10px;
+        border-radius: 8px;
+        text-align: center;
+      }
+
+      .stat-number {
+        font-size: 26px;
+        font-weight: 800;
+        color: var(--fb-blue);
+      }
+
+      .stat-label {
+        font-size: 14px;
+        color: var(--fb-secondary-text);
+        font-weight: 600;
+        margin-top: 2px;
+      }
+
+      /* Center Feed */
+      .feed-container {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+
+      /* "Create Post" Style Add Book Box */
+      .create-box {
+        background: var(--fb-card-bg);
+        border-radius: var(--radius-card);
+        box-shadow: var(--fb-shadow);
+        padding: 18px;
+      }
+
+      .create-top {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid var(--fb-border);
+      }
+
+      .create-prompt-btn {
+        flex: 1;
+        height: 48px;
+        background-color: var(--fb-bg);
+        border-radius: 30px;
+        border: none;
+        padding: 0 18px;
+        font-size: 17px;
+        color: var(--fb-secondary-text);
+        text-align: left;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+
+      .create-prompt-btn:hover {
+        background-color: #e4e6eb;
+      }
+
+      .create-bottom {
+        display: flex;
+        justify-content: space-around;
+        padding-top: 12px;
+      }
+
+      .create-action-btn {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 10px;
+        border-radius: 8px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--fb-secondary-text);
+        transition: background 0.2s;
+      }
+
+      .create-action-btn:hover {
+        background-color: var(--fb-hover-bg);
+      }
+
+      .create-action-btn i.fa-book-medical {
+        color: var(--fb-green);
+        font-size: 20px;
+      }
+      .create-action-btn i.fa-layer-group {
+        color: var(--fb-blue);
+        font-size: 20px;
+      }
+      .create-action-btn i.fa-arrows-rotate {
+        color: var(--fb-orange);
+        font-size: 20px;
+      }
+
+      /* Filter Pills Bar */
+      .filter-bar {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        overflow-x: auto;
+        padding: 4px 0;
+      }
+
+      .filter-pill {
+        padding: 8px 18px;
+        background: var(--fb-card-bg);
+        border: 1px solid var(--fb-border);
+        border-radius: 20px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all 0.2s;
+        color: var(--fb-text);
+      }
+
+      .filter-pill:hover {
+        background: var(--fb-hover-bg);
+      }
+
+      .filter-pill.active {
+        background: var(--fb-blue);
+        color: white;
+        border-color: var(--fb-blue);
+      }
+
+      /* Facebook Post-Style Book Cards */
+      .book-card {
+        background: var(--fb-card-bg);
+        border-radius: var(--radius-card);
+        box-shadow: var(--fb-shadow);
+        padding: 20px;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+      }
+
+      .book-card:hover {
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+      }
+
+      .card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 14px;
+      }
+
+      .card-header-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .book-avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #1877f2, #4e95ff);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        box-shadow: 0 2px 6px rgba(24, 119, 242, 0.3);
+      }
+
+      .author-info h4 {
+        font-size: 17px;
+        font-weight: 700;
+        color: var(--fb-text);
+      }
+
+      .author-info p {
+        font-size: 14px;
+        color: var(--fb-secondary-text);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .badge-status {
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .badge-available {
+        background-color: #e7f3ff;
+        color: var(--fb-blue);
+      }
+
+      .badge-borrowed {
+        background-color: #fde8e8;
+        color: var(--fb-red);
+      }
+
+      .card-body {
+        margin: 12px 0 16px 0;
+      }
+
+      .book-title {
+        font-size: 22px;
+        font-weight: 800;
+        color: var(--fb-text);
+        margin-bottom: 6px;
+        line-height: 1.3;
+      }
+
+      .book-category {
+        display: inline-block;
+        background: var(--fb-bg);
+        color: var(--fb-secondary-text);
+        font-size: 14px;
+        font-weight: 600;
+        padding: 4px 12px;
+        border-radius: 6px;
+        margin-bottom: 12px;
+      }
+
+      .book-desc {
+        font-size: 16px;
+        color: #333;
+        line-height: 1.6;
+        margin-bottom: 14px;
+      }
+
+      .book-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        padding: 10px 14px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        font-size: 14px;
+        color: var(--fb-secondary-text);
+      }
+
+      .book-meta span {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .book-meta b {
+        color: var(--fb-text);
+      }
+
+      /* Facebook Card Actions (Like / Comment style) */
+      .card-actions {
+        border-top: 1px solid var(--fb-border);
+        padding-top: 12px;
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+      }
+
+      .fb-btn {
+        flex: 1;
+        padding: 10px 14px;
+        border: none;
+        border-radius: var(--radius-btn);
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.2s;
+      }
+
+      .btn-borrow {
+        background-color: var(--fb-blue);
+        color: white;
+      }
+
+      .btn-borrow:hover {
+        background-color: var(--fb-blue-hover);
+      }
+
+      .btn-return {
+        background-color: var(--fb-green);
+        color: white;
+      }
+
+      .btn-return:hover {
+        background-color: #27853e;
+      }
+
+      .btn-edit {
+        background-color: var(--fb-hover-bg);
+        color: var(--fb-text);
+      }
+
+      .btn-edit:hover {
+        background-color: #d8dadf;
+      }
+
+      .btn-delete {
+        background-color: #fde8e8;
+        color: var(--fb-red);
+      }
+
+      .btn-delete:hover {
+        background-color: #f8d0d0;
+      }
+
+      /* Right Sidebar */
+      .right-sidebar {
+        position: sticky;
+        top: 84px;
+      }
+
+      .guideline-box {
+        background: white;
+        padding: 18px;
+        border-radius: var(--radius-card);
+        box-shadow: var(--fb-shadow);
+        margin-bottom: 16px;
+      }
+
+      .guideline-box h4 {
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 10px;
+        color: var(--fb-text);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .guideline-list {
+        list-style: none;
+        font-size: 14.5px;
+        color: var(--fb-secondary-text);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .guideline-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+      }
+
+      .guideline-list i {
+        color: var(--fb-blue);
+        margin-top: 3px;
+      }
+
+      /* Modal Popup (Facebook Style) */
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.65);
+        backdrop-filter: blur(2px);
+        z-index: 2000;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .modal-overlay.active {
+        display: flex;
+      }
+
+      .modal-content {
+        background: var(--fb-card-bg);
+        width: 92%;
+        max-width: 540px;
+        border-radius: 12px;
+        box-shadow: var(--fb-shadow-lg);
+        overflow: hidden;
+        animation: modalPop 0.25s ease-out;
+      }
+
+      @keyframes modalPop {
+        from {
+          transform: scale(0.92);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      .modal-header {
+        padding: 18px 22px;
+        border-bottom: 1px solid var(--fb-border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+      }
+
+      .modal-header h3 {
+        font-size: 20px;
+        font-weight: 700;
+        text-align: center;
+        flex: 1;
+      }
+
+      .modal-close-btn {
+        position: absolute;
+        right: 18px;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: var(--fb-hover-bg);
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        color: var(--fb-secondary-text);
+      }
+
+      .modal-close-btn:hover {
+        background: #d8dadf;
+      }
+
+      .modal-body {
+        padding: 20px 22px;
+        max-height: 75vh;
+        overflow-y: auto;
+      }
+
+      .form-group {
+        margin-bottom: 16px;
+      }
+
+      .form-group label {
+        display: block;
+        font-size: 15px;
+        font-weight: 700;
+        margin-bottom: 6px;
+        color: var(--fb-text);
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid var(--fb-border);
+        border-radius: 8px;
+        font-size: 16px;
+        outline: none;
+        transition: border 0.2s;
+        font-family: inherit;
+      }
+
+      .form-control:focus {
+        border-color: var(--fb-blue);
+        box-shadow: 0 0 0 2px rgba(24, 119, 242, 0.2);
+      }
+
+      textarea.form-control {
+        resize: vertical;
+        min-height: 90px;
+      }
+
+      .modal-footer {
+        padding: 16px 22px;
+        border-top: 1px solid var(--fb-border);
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+      }
+
+      .btn-modal-submit {
+        background-color: var(--fb-blue);
+        color: white;
+        padding: 12px 28px;
+        border-radius: 8px;
+        border: none;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+
+      .btn-modal-submit:hover {
+        background-color: var(--fb-blue-hover);
+      }
+
+      .btn-modal-cancel {
+        background-color: var(--fb-hover-bg);
+        color: var(--fb-text);
+        padding: 12px 22px;
+        border-radius: 8px;
+        border: none;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      /* Toast Notifications */
+      .toast-container {
+        position: fixed;
+        bottom: 24px;
+        left: 24px;
+        z-index: 3000;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .toast {
+        background: #242526;
+        color: white;
+        padding: 14px 20px;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: var(--fb-shadow-lg);
+        animation: slideIn 0.3s ease-out;
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateX(-100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      /* Empty State */
+      .empty-state {
+        background: var(--fb-card-bg);
+        border-radius: var(--radius-card);
+        padding: 40px 20px;
+        text-align: center;
+        box-shadow: var(--fb-shadow);
+      }
+
+      .empty-state i {
+        font-size: 50px;
+        color: var(--fb-secondary-text);
+        margin-bottom: 12px;
+      }
+
+      .empty-state h3 {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+
+      .empty-state p {
+        font-size: 16px;
+        color: var(--fb-secondary-text);
+      }
+
+      /* Responsive */
+      @media (max-width: 1080px) {
+        .main-container {
+          grid-template-columns: 260px 1fr;
+        }
+        .right-sidebar {
+          display: none;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .main-container {
+          grid-template-columns: 1fr;
+          margin-top: 10px;
+        }
+        .sidebar {
+          display: none;
+        }
+        .nav-center {
+          display: none;
+        }
+        .nav-left {
+          max-width: 100%;
+        }
+        .book-title {
+          font-size: 19px;
+        }
+        .fb-btn {
+          font-size: 14px;
+          padding: 8px 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Facebook Top Navigation Bar -->
+    <header class="fb-navbar">
+      <div class="nav-left">
+        <a href="/" class="fb-logo" title="LibraryBook Home">
+          <i class="fa-solid fa-book-open-reader"></i>
+        </a>
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Search books, authors, categories..."
+            oninput="handleSearch()"
+          />
+        </div>
+      </div>
+
+      <nav class="nav-center">
+        <div
+          class="nav-tab active"
+          title="Library Feed"
+          onclick="setFilter('all')"
+        >
+          <i class="fa-solid fa-house"></i>
+        </div>
+        <div
+          class="nav-tab"
+          title="Available Books"
+          onclick="setFilter('available')"
+        >
+          <i class="fa-solid fa-book"></i>
+        </div>
+        <div
+          class="nav-tab"
+          title="Borrowed Books"
+          onclick="setFilter('borrowed')"
+        >
+          <i class="fa-solid fa-clock-rotate-left"></i>
+        </div>
+        <div class="nav-tab" title="Add New Book" onclick="openAddModal()">
+          <i class="fa-solid fa-plus-circle"></i>
+        </div>
+      </nav>
+
+      <div class="nav-right">
+        <button
+          class="nav-circle-btn"
+          title="Add Book"
+          onclick="openAddModal()"
+        >
+          <i class="fa-solid fa-plus"></i>
+        </button>
+        <button
+          class="nav-circle-btn"
+          title="Refresh List"
+          onclick="fetchBooks()"
+        >
+          <i class="fa-solid fa-rotate-right"></i>
+        </button>
+        <div class="user-pill">
+          <div class="user-avatar">L</div>
+          <span>Librarian</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Container Layout -->
+    <main class="main-container">
+      <!-- Left Sidebar: Categories & Stats -->
+      <aside class="sidebar">
+        <div class="sidebar-card">
+          <div class="sidebar-title">
+            <i
+              class="fa-solid fa-bars-staggered"
+              style="color: var(--fb-blue)"
+            ></i>
+            Navigation
+          </div>
+          <div
+            class="sidebar-menu-item active"
+            id="menu-all"
+            onclick="setFilter('all')"
+          >
+            <i
+              class="fa-solid fa-layer-group"
+              style="color: var(--fb-blue)"
+            ></i>
+            <span>All Books</span>
+            <span class="stat-badge" id="badge-all-count">0</span>
+          </div>
+          <div
+            class="sidebar-menu-item"
+            id="menu-available"
+            onclick="setFilter('available')"
+          >
+            <i
+              class="fa-solid fa-circle-check"
+              style="color: var(--fb-green)"
+            ></i>
+            <span>Available</span>
+            <span class="stat-badge" id="badge-avail-count">0</span>
+          </div>
+          <div
+            class="sidebar-menu-item"
+            id="menu-borrowed"
+            onclick="setFilter('borrowed')"
+          >
+            <i
+              class="fa-solid fa-circle-pause"
+              style="color: var(--fb-orange)"
+            ></i>
+            <span>Borrowed</span>
+            <span class="stat-badge" id="badge-borrow-count">0</span>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <div class="sidebar-title">
+            <i class="fa-solid fa-chart-pie" style="color: var(--fb-blue)"></i>
+            Library Overview
+          </div>
+          <div class="stat-box">
+            <div class="stat-item">
+              <div class="stat-number" id="stat-total">0</div>
+              <div class="stat-label">Total Books</div>
+            </div>
+            <div class="stat-item">
+              <div
+                class="stat-number"
+                style="color: var(--fb-green)"
+                id="stat-available"
+              >
+                0
+              </div>
+              <div class="stat-label">Available</div>
+            </div>
+          </div>
+          <div class="stat-box" style="margin-top: 8px">
+            <div class="stat-item">
+              <div
+                class="stat-number"
+                style="color: var(--fb-orange)"
+                id="stat-borrowed"
+              >
+                0
+              </div>
+              <div class="stat-label">Borrowed</div>
+            </div>
+            <div class="stat-item">
+              <div
+                class="stat-number"
+                style="color: #6c5ce7"
+                id="stat-categories"
+              >
+                0
+              </div>
+              <div class="stat-label">Categories</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Center Feed -->
+      <section class="feed-container">
+        <!-- "What's on your mind?" Style Add Book Box -->
+        <div class="create-box">
+          <div class="create-top">
+            <div
+              class="user-avatar"
+              style="background: linear-gradient(135deg, #1877f2, #0052cc)"
+            >
+              <i class="fa-solid fa-book"></i>
+            </div>
+            <button class="create-prompt-btn" onclick="openAddModal()">
+              What book would you like to add to the library?
+            </button>
+          </div>
+          <div class="create-bottom">
+            <button class="create-action-btn" onclick="openAddModal()">
+              <i class="fa-solid fa-book-medical"></i> Add Book
+            </button>
+            <button class="create-action-btn" onclick="setFilter('available')">
+              <i class="fa-solid fa-layer-group"></i> In Stock
+            </button>
+            <button class="create-action-btn" onclick="fetchBooks()">
+              <i class="fa-solid fa-arrows-rotate"></i> Sync Data
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter Pills Bar -->
+        <div class="filter-bar">
+          <button
+            class="filter-pill active"
+            id="pill-all"
+            onclick="setFilter('all')"
+          >
+            All Books
+          </button>
+          <button
+            class="filter-pill"
+            id="pill-available"
+            onclick="setFilter('available')"
+          >
+            Available Now
+          </button>
+          <button
+            class="filter-pill"
+            id="pill-borrowed"
+            onclick="setFilter('borrowed')"
+          >
+            Currently Borrowed
+          </button>
+        </div>
+
+        <!-- Books Cards Feed -->
+        <div id="booksFeed" class="feed-container">
+          <!-- Dynamically rendered book cards -->
+        </div>
+      </section>
+
+      <!-- Right Sidebar: Rules & Shortcuts -->
+      <aside class="right-sidebar">
+        <div class="guideline-box">
+          <h4><i class="fa-solid fa-circle-info"></i> Library Guidelines</h4>
+          <ul class="guideline-list">
+            <li>
+              <i class="fa-solid fa-check"></i> Standard borrowing duration is
+              14 days.
+            </li>
+            <li>
+              <i class="fa-solid fa-check"></i> Click <b>Borrow</b> to assign a
+              book to a patron.
+            </li>
+            <li>
+              <i class="fa-solid fa-check"></i> Click <b>Return</b> when a
+              patron returns a book.
+            </li>
+            <li>
+              <i class="fa-solid fa-check"></i> Live MySQL Database integration
+              via Spring Boot REST API.
+            </li>
+          </ul>
+        </div>
+
+        <div class="guideline-box">
+          <h4><i class="fa-solid fa-bolt"></i> Quick Actions</h4>
+          <button
+            class="fb-btn btn-borrow"
+            style="width: 100%; margin-bottom: 8px"
+            onclick="openAddModal()"
+          >
+            <i class="fa-solid fa-plus"></i> Add New Book
+          </button>
+          <button
+            class="fb-btn btn-edit"
+            style="width: 100%"
+            onclick="fetchBooks()"
+          >
+            <i class="fa-solid fa-arrows-rotate"></i> Refresh All Records
+          </button>
+        </div>
+      </aside>
+    </main>
+
+    <!-- Modal: Add / Edit Book -->
+    <div class="modal-overlay" id="bookModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="modalTitle">Add New Book</h3>
+          <button class="modal-close-btn" onclick="closeBookModal()">
+            &times;
+          </button>
+        </div>
+        <form id="bookForm" onsubmit="handleSaveBook(event)">
+          <div class="modal-body">
+            <input type="hidden" id="bookId" />
+            <div class="form-group">
+              <label for="bookTitle">Book Title *</label>
+              <input
+                type="text"
+                id="bookTitle"
+                class="form-control"
+                placeholder="e.g. Clean Code"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="bookAuthor">Author *</label>
+              <input
+                type="text"
+                id="bookAuthor"
+                class="form-control"
+                placeholder="e.g. Robert C. Martin"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="bookCategory">Category</label>
+              <input
+                type="text"
+                id="bookCategory"
+                class="form-control"
+                placeholder="e.g. Technology, Fiction, Science"
+              />
+            </div>
+            <div class="form-group">
+              <label for="bookIsbn">ISBN Number</label>
+              <input
+                type="text"
+                id="bookIsbn"
+                class="form-control"
+                placeholder="e.g. 978-0132350884"
+              />
+            </div>
+            <div class="form-group">
+              <label for="bookDescription">Description / Summary</label>
+              <textarea
+                id="bookDescription"
+                class="form-control"
+                placeholder="Brief summary of the book..."
+              ></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn-modal-cancel"
+              onclick="closeBookModal()"
+            >
+              Cancel
+            </button>
+            <button type="submit" class="btn-modal-submit" id="saveBtn">
+              Save Book
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal: Borrow Book (Enter Borrower's Name) -->
+    <div class="modal-overlay" id="borrowModal">
+      <div class="modal-content" style="max-width: 440px">
+        <div class="modal-header">
+          <h3>Borrow Book</h3>
+          <button class="modal-close-btn" onclick="closeBorrowModal()">
+            &times;
+          </button>
+        </div>
+        <form onsubmit="handleBorrowSubmit(event)">
+          <div class="modal-body">
+            <input type="hidden" id="borrowBookId" />
+            <p
+              style="
+                margin-bottom: 14px;
+                font-size: 16px;
+                color: var(--fb-secondary-text);
+              "
+            >
+              Borrowing:
+              <b id="borrowBookTitle" style="color: var(--fb-text)"></b>
+            </p>
+            <div class="form-group">
+              <label for="borrowerName">Patron / Member Name *</label>
+              <input
+                type="text"
+                id="borrowerName"
+                class="form-control"
+                placeholder="Enter student or member name"
+                required
+                autofocus
+              />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn-modal-cancel"
+              onclick="closeBorrowModal()"
+            >
+              Cancel
+            </button>
+            <button type="submit" class="btn-modal-submit">
+              Confirm Borrow
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+      const API_URL = "/api/books";
+      let allBooks = [];
+      let currentFilter = "all";
+
+      // Fetch all books on page load
+      document.addEventListener("DOMContentLoaded", () => {
+        fetchBooks();
+      });
+
+      async function fetchBooks() {
+        try {
+          const response = await fetch(API_URL);
+          if (!response.ok) throw new Error("Failed to load books");
+          allBooks = await response.json();
+          renderBooks();
+          updateStats();
+        } catch (err) {
+          console.error(err);
+          showToast(
+            "❌ Unable to connect to server. Ensure Spring Boot is running.",
+          );
+        }
+      }
+
+      function renderBooks() {
+        const feed = document.getElementById("booksFeed");
+        const searchKeyword = document
+          .getElementById("searchInput")
+          .value.trim()
+          .toLowerCase();
+
+        let filtered = allBooks.filter((book) => {
+          // Status filter
+          if (currentFilter === "available" && !book.available) return false;
+          if (currentFilter === "borrowed" && book.available) return false;
+
+          // Search keyword filter
+          if (searchKeyword) {
+            const matchTitle =
+              book.title && book.title.toLowerCase().includes(searchKeyword);
+            const matchAuthor =
+              book.author && book.author.toLowerCase().includes(searchKeyword);
+            const matchCategory =
+              book.category &&
+              book.category.toLowerCase().includes(searchKeyword);
+            const matchIsbn =
+              book.isbn && book.isbn.toLowerCase().includes(searchKeyword);
+            return matchTitle || matchAuthor || matchCategory || matchIsbn;
+          }
+          return true;
+        });
+
+        if (filtered.length === 0) {
+          feed.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fa-regular fa-folder-open"></i>
+                        <h3>No books found</h3>
+                        <p>No records match your criteria. Try adjusting the search or click "Add Book".</p>
+                    </div>
+                `;
+          return;
+        }
+
+        feed.innerHTML = filtered
+          .map((book) => {
+            const isAvail = book.available;
+            const statusBadge = isAvail
+              ? `<span class="badge-status badge-available"><i class="fa-solid fa-circle-check"></i> In Stock</span>`
+              : `<span class="badge-status badge-borrowed"><i class="fa-solid fa-user-clock"></i> Borrowed by ${escapeHtml(book.borrowedBy || "Member")}</span>`;
+
+            const actionButton = isAvail
+              ? `<button class="fb-btn btn-borrow" onclick="promptBorrow(${book.id}, '${escapeQuote(book.title)}')">
+                         <i class="fa-solid fa-hand-holding-hand"></i> Borrow
+                       </button>`
+              : `<button class="fb-btn btn-return" onclick="returnBook(${book.id})">
+                         <i class="fa-solid fa-arrow-rotate-left"></i> Return
+                       </button>`;
+
+            return `
+                    <article class="book-card">
+                        <div class="card-header">
+                            <div class="card-header-left">
+                                <div class="book-avatar">
+                                    <i class="fa-solid fa-book-bookmark"></i>
+                                </div>
+                                <div class="author-info">
+                                    <h4>${escapeHtml(book.author)}</h4>
+                                    <p><i class="fa-solid fa-earth-americas"></i> Library Catalog &bull; ID #${book.id}</p>
+                                </div>
+                            </div>
+                            <div>${statusBadge}</div>
+                        </div>
+
+                        <div class="card-body">
+                            <h2 class="book-title">${escapeHtml(book.title)}</h2>
+                            ${book.category ? `<span class="book-category"><i class="fa-solid fa-tag"></i> ${escapeHtml(book.category)}</span>` : ""}
+                            <p class="book-desc">${escapeHtml(book.description || "No description provided for this book.")}</p>
+
+                            <div class="book-meta">
+                                <span><i class="fa-solid fa-barcode"></i> ISBN: <b>${escapeHtml(book.isbn || "N/A")}</b></span>
+                                <span><i class="fa-solid fa-shield-halved"></i> Status: <b>${isAvail ? "Available" : "Borrowed"}</b></span>
+                                ${book.borrowedBy ? `<span><i class="fa-solid fa-user"></i> Borrower: <b>${escapeHtml(book.borrowedBy)}</b></span>` : ""}
+                            </div>
+                        </div>
+
+                        <div class="card-actions">
+                            ${actionButton}
+                            <button class="fb-btn btn-edit" onclick="openEditModal(${book.id})">
+                                <i class="fa-regular fa-pen-to-square"></i> Edit
+                            </button>
+                            <button class="fb-btn btn-delete" onclick="deleteBook(${book.id})">
+                                <i class="fa-regular fa-trash-can"></i> Delete
+                            </button>
+                        </div>
+                    </article>
+                `;
+          })
+          .join("");
+      }
+
+      function updateStats() {
+        const total = allBooks.length;
+        const available = allBooks.filter((b) => b.available).length;
+        const borrowed = total - available;
+        const categories = new Set(
+          allBooks.map((b) => b.category).filter(Boolean),
+        ).size;
+
+        document.getElementById("stat-total").textContent = total;
+        document.getElementById("stat-available").textContent = available;
+        document.getElementById("stat-borrowed").textContent = borrowed;
+        document.getElementById("stat-categories").textContent = categories;
+
+        document.getElementById("badge-all-count").textContent = total;
+        document.getElementById("badge-avail-count").textContent = available;
+        document.getElementById("badge-borrow-count").textContent = borrowed;
+      }
+
+      function setFilter(filter) {
+        currentFilter = filter;
+
+        // Update pills
+        document
+          .querySelectorAll(".filter-pill")
+          .forEach((pill) => pill.classList.remove("active"));
+        const activePill = document.getElementById(`pill-${filter}`);
+        if (activePill) activePill.classList.add("active");
+
+        // Update sidebar items
+        document
+          .querySelectorAll(".sidebar-menu-item")
+          .forEach((item) => item.classList.remove("active"));
+        const activeMenuItem = document.getElementById(`menu-${filter}`);
+        if (activeMenuItem) activeMenuItem.classList.add("active");
+
+        renderBooks();
+      }
+
+      function handleSearch() {
+        renderBooks();
+      }
+
+      // Add / Edit Modal Logic
+      function openAddModal() {
+        document.getElementById("modalTitle").textContent = "Add New Book";
+        document.getElementById("bookForm").reset();
+        document.getElementById("bookId").value = "";
+        document.getElementById("saveBtn").textContent = "Save Book";
+        document.getElementById("bookModal").classList.add("active");
+      }
+
+      function openEditModal(id) {
+        const book = allBooks.find((b) => b.id === id);
+        if (!book) return;
+
+        document.getElementById("modalTitle").textContent = "Edit Book Details";
+        document.getElementById("bookId").value = book.id;
+        document.getElementById("bookTitle").value = book.title || "";
+        document.getElementById("bookAuthor").value = book.author || "";
+        document.getElementById("bookCategory").value = book.category || "";
+        document.getElementById("bookIsbn").value = book.isbn || "";
+        document.getElementById("bookDescription").value =
+          book.description || "";
+        document.getElementById("saveBtn").textContent = "Update Book";
+        document.getElementById("bookModal").classList.add("active");
+      }
+
+      function closeBookModal() {
+        document.getElementById("bookModal").classList.remove("active");
+      }
+
+      async function handleSaveBook(event) {
+        event.preventDefault();
+        const id = document.getElementById("bookId").value;
+        const bookData = {
+          title: document.getElementById("bookTitle").value.trim(),
+          author: document.getElementById("bookAuthor").value.trim(),
+          category: document.getElementById("bookCategory").value.trim(),
+          isbn: document.getElementById("bookIsbn").value.trim(),
+          description: document.getElementById("bookDescription").value.trim(),
+          available: true,
+        };
+
+        try {
+          let response;
+          if (id) {
+            // Update existing
+            const existing = allBooks.find((b) => b.id == id);
+            if (existing) {
+              bookData.available = existing.available;
+              bookData.borrowedBy = existing.borrowedBy;
+            }
+            response = await fetch(`${API_URL}/${id}`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(bookData),
+            });
+          } else {
+            // Create new
+            response = await fetch(API_URL, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(bookData),
+            });
+          }
+
+          if (!response.ok) throw new Error("Error saving book");
+          closeBookModal();
+          showToast(
+            id ? "✅ Book updated successfully!" : "✅ Book added to library!",
+          );
+          fetchBooks();
+        } catch (err) {
+          console.error(err);
+          showToast("❌ Failed to save book");
+        }
+      }
+
+      // Delete Logic
+      async function deleteBook(id) {
+        if (
+          !confirm(
+            "Are you sure you want to remove this book from the library?",
+          )
+        )
+          return;
+        try {
+          const response = await fetch(`${API_URL}/${id}`, {
+            method: "DELETE",
+          });
+          if (!response.ok) throw new Error("Error deleting book");
+          showToast("🗑️ Book removed successfully");
+          fetchBooks();
+        } catch (err) {
+          console.error(err);
+          showToast("❌ Failed to delete book");
+        }
+      }
+
+      // Borrow Logic
+      function promptBorrow(id, title) {
+        document.getElementById("borrowBookId").value = id;
+        document.getElementById("borrowBookTitle").textContent = `"${title}"`;
+        document.getElementById("borrowerName").value = "";
+        document.getElementById("borrowModal").classList.add("active");
+      }
+
+      function closeBorrowModal() {
+        document.getElementById("borrowModal").classList.remove("active");
+      }
+
+      async function handleBorrowSubmit(event) {
+        event.preventDefault();
+        const id = document.getElementById("borrowBookId").value;
+        const borrower = document.getElementById("borrowerName").value.trim();
+
+        try {
+          const response = await fetch(`${API_URL}/${id}/borrow`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ borrower: borrower }),
+          });
+
+          if (!response.ok) throw new Error("Error borrowing book");
+          closeBorrowModal();
+          showToast(`📘 Book borrowed by ${borrower}`);
+          fetchBooks();
+        } catch (err) {
+          console.error(err);
+          showToast("❌ Failed to borrow book");
+        }
+      }
+
+      // Return Logic
+      async function returnBook(id) {
+        try {
+          const response = await fetch(`${API_URL}/${id}/return`, {
+            method: "POST",
+          });
+          if (!response.ok) throw new Error("Error returning book");
+          showToast("📗 Book marked as returned and available");
+          fetchBooks();
+        } catch (err) {
+          console.error(err);
+          showToast("❌ Failed to return book");
+        }
+      }
+
+      // Toast Helper
+      function showToast(message) {
+        const container = document.getElementById("toastContainer");
+        const toast = document.createElement("div");
+        toast.className = "toast";
+        toast.innerHTML = message;
+        container.appendChild(toast);
+        setTimeout(() => {
+          toast.style.opacity = "0";
+          toast.style.transform = "translateY(10px)";
+          toast.style.transition = "all 0.3s ease";
+          setTimeout(() => toast.remove(), 300);
+        }, 3200);
+      }
+
+      function escapeHtml(text) {
+        if (!text) return "";
+        return text.replace(
+          /[&<>"']/g,
+          (m) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#039;",
+            })[m],
+        );
+      }
+
+      function escapeQuote(text) {
+        if (!text) return "";
+        return text.replace(/'/g, "\\'");
+      }
+    </script>
+  </body>
+</html>
